@@ -1,0 +1,349 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Base colors */
+    --bg: #FDFCFB;
+    --surface: #ffffff;
+    --ink: #0A0A0A;
+    --muted: #64748B;
+    
+    /* Safe areas */
+    --safe-top: env(safe-area-inset-top, 0);
+    --safe-bottom: env(safe-area-inset-bottom, 0);
+    --safe-left: env(safe-area-inset-left, 0);
+    --safe-right: env(safe-area-inset-right, 0);
+    
+    /* Dynamic theme colors - will be overridden */
+    --accent: #FF6FAE;
+    --accent-light: #FFB5D4;
+    --accent-dark: #E6468D;
+    --accent-bg: #FFF0F7;
+    --accent-surface: #FFFBFD;
+    
+    /* Shadows */
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+    --shadow-md: 0 8px 24px rgba(0,0,0,0.06);
+    --shadow-lg: 0 16px 48px rgba(0,0,0,0.08);
+    --shadow-xl: 0 24px 64px rgba(0,0,0,0.12);
+    --shadow-glow: 0 0 80px var(--accent);
+  }
+
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Prevent horizontal overflow on all elements */
+  *, *::before, *::after {
+    max-width: 100%;
+  }
+  
+  /* Responsive container fixes */
+  section {
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+  
+  /* Ensure main content stays within viewport */
+  main {
+    width: 100%;
+    max-width: 100vw;
+    /* Remove overflow from main to prevent double scrollbar */
+  }
+
+  html {
+    /* No overflow on html to prevent double scrollbars */
+    width: 100%;
+    height: 100%;
+  }
+  
+  body {
+    /* Only body handles scrolling */
+    overflow-x: hidden;
+    width: 100%;
+    min-height: 100vh;
+    /* iOS fix for viewport height */
+    min-height: -webkit-fill-available;
+    background: var(--accent-bg);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "ss01", "ss02";
+    position: relative;
+    /* Prevent text size adjustment on mobile */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    /* Respect safe areas */
+    padding-top: var(--safe-top);
+    padding-bottom: var(--safe-bottom);
+  }
+  
+  /* Fix for Next.js wrapper div */
+  body > div {
+    min-height: 100vh;
+    /* Prevent this div from creating its own scrollbar */
+    overflow: visible !important;
+  }
+
+  ::selection {
+    background-color: var(--accent-light);
+    color: var(--ink);
+  }
+
+  /* Noise texture overlay */
+  .noise::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: 
+      repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.03) 35px, rgba(255,255,255,.03) 70px),
+      url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' /%3E%3C/filter%3E%3Crect width='60' height='60' filter='url(%23noise)' opacity='0.02'/%3E%3C/svg%3E");
+    pointer-events: none;
+    opacity: 0.5;
+    mix-blend-mode: overlay;
+  }
+}
+
+
+/* 8px spacing scale */
+:root {
+  --space-1: 0.5rem;  /* 8px */
+  --space-2: 1rem;    /* 16px */
+  --space-3: 1.5rem;  /* 24px */
+  --space-4: 2rem;    /* 32px */
+  --space-5: 2.5rem;  /* 40px */
+  --space-6: 3rem;    /* 48px */
+  --space-7: 3.5rem;  /* 56px */
+  --space-8: 4rem;    /* 64px */
+}
+
+
+/* Image optimization for all devices */
+img {
+  /* Remove default border */
+  border: none;
+  outline: none;
+  /* Optimize rendering */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  /* Prevent layout shift */
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Next.js Image component fixes */
+[data-nimg] {
+  border: none !important;
+  outline: none !important;
+}
+
+/* Prevent FOUC for images */
+img[loading="lazy"] {
+  background: transparent;
+}
+
+@layer utilities {
+  /* Consistent section styling */
+  .section-padding {
+    @apply py-24 sm:py-32 lg:py-40;
+  }
+  
+  .section-title {
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    font-weight: 900;
+  }
+  
+  .gradient-text {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+  
+  /* Premium animated gradient background */
+  .hero-shader {
+    position: absolute;
+    inset: 0;
+    opacity: 0.9;
+    background:
+      radial-gradient(ellipse 1000px 800px at 25% 0%, var(--accent-light) 0%, transparent 40%),
+      radial-gradient(ellipse 800px 600px at 75% 100%, var(--accent) 0%, transparent 40%),
+      radial-gradient(circle 1200px at 50% 50%, var(--accent-bg) 0%, transparent 50%),
+      radial-gradient(ellipse 900px 700px at 80% 20%, var(--accent-dark) 0%, transparent 45%),
+      radial-gradient(ellipse 700px 500px at 20% 80%, var(--accent-light) 0%, transparent 45%),
+      linear-gradient(135deg, var(--accent-bg) 0%, var(--accent-surface) 50%, var(--accent-bg) 100%);
+    background-size: 150% 150%, 150% 150%, 120% 120%, 140% 140%, 140% 140%, 100% 100%;
+    animation: gradient-morph 20s ease-in-out infinite;
+    filter: blur(1px);
+  }
+
+  @keyframes gradient-morph {
+    0%, 100% { 
+      background-position: 0% 0%, 100% 100%, 50% 50%, 80% 20%, 20% 80%, 0% 0%;
+      transform: scale(1) rotate(0deg);
+    }
+    25% { 
+      background-position: 100% 0%, 0% 100%, 50% 50%, 20% 80%, 80% 20%, 100% 0%;
+    }
+    50% { 
+      background-position: 100% 100%, 0% 0%, 50% 50%, 80% 80%, 20% 20%, 100% 100%;
+      transform: scale(1.05) rotate(1deg);
+    }
+    75% { 
+      background-position: 0% 100%, 100% 0%, 50% 50%, 20% 20%, 80% 80%, 0% 100%;
+    }
+  }
+
+  /* Glass morphism effects */
+  .glass {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .glass-dark {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* Premium button styles */
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+    box-shadow: 
+      0 4px 14px 0 rgba(0,0,0,0.1),
+      0 0 20px var(--accent-light);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+      0 6px 20px 0 rgba(0,0,0,0.15),
+      0 0 40px var(--accent-light);
+  }
+
+  .btn-secondary {
+    background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 100%);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.3);
+    box-shadow: 0 4px 14px 0 rgba(0,0,0,0.05);
+  }
+
+  .btn-secondary:hover {
+    background: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.9) 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px 0 rgba(0,0,0,0.1);
+  }
+
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .safe-top {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Light sweep animation for hero donut */
+  .light-sweep {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(120px 60px at 30% 25%, rgba(255,255,255,.35), transparent 60%);
+    animation: sweep 6s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  @keyframes sweep {
+    0%, 100% { transform: translate(-20%, -10%) rotate(0deg) }
+    50% { transform: translate(30%, 20%) rotate(10deg) }
+  }
+
+  /* Enhanced shadows */
+  .shadow-soft-hover {
+    box-shadow: var(--shadow-soft);
+    transition: box-shadow 0.3s ease;
+  }
+
+  .shadow-soft-hover:hover {
+    box-shadow: var(--shadow-strong);
+  }
+
+  /* Performance optimizations */
+  @media (pointer: coarse) {
+    .will-change-transform {
+      will-change: auto;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .motion-safe\:animate-float,
+    .motion-safe\:animate-float-slow,
+    .will-change-transform,
+    .light-sweep {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .gradient-fade-edges {
+    -webkit-mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+    mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+  }
+
+  .no-tap-highlight {
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  /* Mobile-specific viewport fixes */
+  @media (max-width: 768px) {
+    section {
+      min-height: auto !important;
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+    
+    .grid {
+      display: grid;
+      width: 100%;
+    }
+    
+    /* Prevent images from breaking out */
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+  }
+  
+  /* Responsive text sizing */
+  @media (max-width: 640px) {
+    html {
+      font-size: 14px;
+    }
+  }
+  
+}
