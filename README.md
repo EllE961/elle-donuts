@@ -176,7 +176,7 @@ docs/assets/            README screenshots
 - Quick view's "Add 12" calls the add function twice in the same tick and both calls read the same cart state, so 12 of one flavor in an empty cart ends up as two boxes of 6. I reproduced this in headless Chrome.
 - At 1440x900 the hero title for Classic Honey Glaze is 14 px wider than its column, and the last letter is clipped.
 - `app/layout.tsx` points Open Graph at `/og-image.jpg`, which does not exist, and there is no favicon. The footer social icons link to `#`.
-- Next.js is pinned at 14.2.0. `npm audit --omit=dev` reports advisories against it, one of them critical, fixed in 14.2.35. Bump it before deploying anywhere.
+- Next.js is on 14.2.35, the last 14.x release. `npm audit --omit=dev` still reports advisories against Next.js and the PostCSS it bundles that are only fixed in Next.js 16, so a real deployment should move to 16.
 - There are no tests. `npm run lint` passes.
 
 ---
